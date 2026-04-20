@@ -1,0 +1,35 @@
+// ASK Modulation & Demodulation System
+
+const int txPin = 9;
+const int rxPin = A0;
+
+String data = "10101";
+
+void setup() {
+  pinMode(txPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  // TRANSMISSION (ASK Modulation)
+  for (int i = 0; i < data.length(); i++) {
+    if (data[i] == '1') {
+      analogWrite(txPin, 200); // High amplitude
+    } else {
+      analogWrite(txPin, 20);  // Low amplitude
+    }
+    delay(500);
+  }
+
+  analogWrite(txPin, 0);
+  delay(2000);
+
+  // SIMPLE DEMODULATION (Envelope approximation)
+  int signal = analogRead(rxPin);
+
+  Serial.print("Received Signal Strength: ");
+  Serial.println(signal);
+
+  delay(1000);
+}
